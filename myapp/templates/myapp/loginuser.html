@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title></title>
+  </head>
+  <body>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            <h2>Sign In</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" class="form-control" id="username" aria-describedby="usernameHelp">
+                    <small id="usernameHelp" class="form-text text-muted">Your username must be unique. We'll let you know if someone has taken it already.</small>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" class="form-control" id="password">
+                </div>
+                <div class="form-group">
+                   <label for="type">Type</label>
+                   <select id="type" class="form-control" name="type">
+                     <option value="student">Student</option>
+                     <option value="faculty">Faculty</option>
+                   </select>
+                 </div>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </form>
+
+
+  </body>
+</html>

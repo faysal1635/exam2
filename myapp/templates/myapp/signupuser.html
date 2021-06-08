@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Project</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  </head>
+  <body>
+
+    <div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+      <h2>Sign Up</h2>
+  </div>
+</div>
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+      {% if error %}
+          <div class="alert alert-danger" role="alert">
+              {{ error }}
+          </div>
+      {% endif %}
+      <form method="POST">
+          {% csrf_token %}
+          {{ form.as_media }}
+          <div class="form-group row">
+			         <label class="col-form-label col-4">Username</label>
+			            <div class="col-8">
+                    {{ form.username }}
+            </div>
+          </div>
+
+          <div class="form-group row">
+			        <label class="col-form-label col-4">Password</label>
+			           <div class="col-6">
+                  {{ form.password1 }}
+            </div>
+          </div>
+          <div class="form-group row">
+			        <label class="col-form-label col-4">Confirm password</label>
+			           <div class="col-6">
+                  {{ form.password2 }}
+            </div>
+          </div>
+          <div class="form-group row">
+			        <label class="col-form-label col-4">Type</label>
+			         <div class="col-6">
+                {{ form.group }}
+            </div>
+          </div>
+
+
+          <br>
+          <button type="submit" class="btn btn-primary">Sign Up</button>
+      </form>
+      <hr>
+      <div class="text-center">
+          Do you already have an account? <a href="{% url 'loginuser' %}">Login here</a>
+      </div>
+  </div>
+</div>
+  </body>
+</html>
