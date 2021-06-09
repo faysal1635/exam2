@@ -12,4 +12,10 @@ class UserCreateForm(UserCreationForm):
 class StudentFrom(ModelForm):
     class Meta:
         model = Student
-        fields=['user','stu_name','stu_level','stu_dept','stu_mail','exam']
+        fields=['user','stu_name','stu_roll','stu_level','stu_dept','stu_mail','exam']
+
+class ExamForm(ModelForm):
+    class Meta:
+        model = Exam
+        fields='__all__'
+        exclude =('room',)

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  </head>
+  <body>
+    <br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h5> Exam </h5>
+
+        </div>
+        <div class="card card-body">
+          <a class="btn btn-sm btn-block bg-dark" style="color: white;"  href="{% url 'exam_create' %}"> Create Customer </a>
+            <table class="table">
+                <tr>
+                    <th>exam_code</th>
+                    <th>exam_name</th>
+                    <th>exam_date</th>
+                    <th>exam_type</th>
+                    <th>exam_time</th>
+                </tr>
+
+                {% for exam in exam %}
+                    <tr>
+                        <td>{{exam.exam_code}}</td>
+                        <td>{{exam.exam_name}}</td>
+                        <td>{{exam.exam_date}}</td>
+                        <td>{{exam.exam_type}}</td>
+                        <td>{{exam.exam_time}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'exam_update' exam.exam_code %}">Update</a></td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'exam_delete' exam.exam_code %}">Delete</a></td>
+
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+</div>
+  </body>
+</html>

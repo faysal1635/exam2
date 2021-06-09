@@ -38,11 +38,15 @@ def loginuser(request):
         if user is None:
             return render(request, 'myapp/loginuser.html', {'form':AuthenticationForm(), 'error':'Username and password did not match'})
         elif request.POST['type']=='student':
-            login(request, user)
+            login(request,user)
             return redirect('student')
-        else:
+        elif request.POST['type']=='faculty':
             login(request,user)
             return redirect('faculty')
+        else:
+            login(request,user)
+            return redirect('admin_panal')
+
 
 @login_required
 def logoutuser(request):
@@ -64,6 +68,63 @@ def studentInfo(request):
         if form.is_valid():
             form.save()
             return redirect('student')
+def studentInfoupdate(request, pk):
+      student= request.user
+      name = student.id
+      name = pk
+      student = Student.objects.get(user=pk)
+      form  = StudentFrom(instance=student)
+      if request.method == 'POST':
+          form = StudentFrom(request.POST,instance=student)
+          if form.is_valid():
+               user = form.save()
+               return redirect('student')
+      context = {'form':form}
+      return render(request,'myapp/studentInfo.html',context)
+
+def exam_schedule(request):
+    student = request.user
+    id = student.id
+    print(id)
+    student = Student.objects.get(user=id)
+
+    exam =student.exam.all()
+    return render(request,'myapp/exam_schedule.html',{'exam':exam})
 
 def faculty(request):
       return render(request,'myapp/faculty.html')
+
+def admin_panal(request):
+      return render(request,'myapp/admin_panal.html')
+
+def exam(request):
+      exam = Exam.objects.all()
+      return render(request,'myapp/exam.html',{'exam':exam})
+def exam_create(request):
+      form  = ExamForm()
+      if request.method == 'POST':
+          form = ExamForm(request.POST)
+          if form.is_valid():
+              user = form.save()
+              return redirect('exam')
+      context = {'form':form}
+      return render(request,'myapp/exam_create.html',context)
+
+def exam_update(request,pk):
+      exam = Exam.objects.get(exam_code=pk)
+      form  = ExamForm(instance=exam)
+      if request.method == 'POST':
+          form = ExamForm(request.POST,instance=exam)
+          if form.is_valid():
+               user = form.save()
+               return redirect('exam')
+      context = {'form':form}
+      return render(request,'myapp/exam_create.html',context)
+
+def exam_delete(request,pk):
+    exam = Exam.objects.get(exam_code=pk)
+    if request.method == 'POST':
+        exam.delete()
+        return redirect('exam')
+    context = {'exam_code':exam}
+    return render(request,'myapp/exam_delete.html',context)
