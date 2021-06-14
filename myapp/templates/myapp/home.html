@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>exam</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% extends 'myapp/base.html' %}
 
-  </head>
-  <body>
-
+{% block content %}
 <br>
   <br>
   <br>
@@ -20,10 +13,8 @@
       <a role="button" class="btn btn-primary btn-lg" href="{% url 'signupuser' %}">Start</a>
       <br>
 
-      <h2>Alredy sign up!</h2>
+      <h2>Already sign up!</h2>
       <a href="{% url 'loginuser' %}">Sign in</a>
     </div>
   </div>
-
-  </body>
-</html>
+{% endblock content %}

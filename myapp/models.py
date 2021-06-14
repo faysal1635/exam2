@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class Student(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True)
     stu_name = models.CharField(max_length=12, blank=True, null=True)
-    stu_roll = models.CharField(max_length=12, blank=True, null=True)
+    stu_roll = models.CharField(unique=True,max_length=12, blank=True, null=True)
     stu_level = models.CharField(max_length=10, blank=True, null=True)
     stu_dept = models.CharField(max_length=12, blank=True, null=True)
     stu_mail = models.CharField(max_length=50, blank=True, null=True)
@@ -27,9 +27,9 @@ class Faculty(models.Model):
 
 
 class Room(models.Model):
-    room_no =  models.CharField(max_length=12, blank=True, null=True)
+    room_no =  models.CharField(unique=True,max_length=12, blank=True, null=True)
     floor = models.CharField(max_length=12, blank=True, null=True)
-    capacity = models.CharField(max_length=12, blank=True, null=True)
+    capacity = models.IntegerField(max_length=12, blank=True, null=True)
 
     def __str__(self):
         return self.room_no

@@ -19,3 +19,9 @@ class ExamForm(ModelForm):
         model = Exam
         fields='__all__'
         exclude =('room',)
+
+class RoomForm(ModelForm):
+    class Meta:
+        model = Room
+        fields = '__all__'
+        

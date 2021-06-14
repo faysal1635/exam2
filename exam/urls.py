@@ -32,7 +32,13 @@ urlpatterns = [
 
     path('faculty/', views.faculty,name='faculty'),
 
-    path('admin_panal/', views.admin_panal,name='admin_panal'),
+    path('admin_panel/', views.admin_panel,name='admin_panel'),
+    path('room_create/', views.room_create,name='room_create'),
+    path('room_update/<str:pk>', views.room_update,name='room_update'),
+    path('room/<str:pk>', views.room,name='room'),
+    path('seat_manage/', views.seat_manage,name='seat_manage'),
+
+
     path('exam/', views.exam,name='exam'),
     path('exam_create/', views.exam_create,name='exam_create'),
     path('exam_update/<str:pk>', views.exam_update,name='exam_update'),

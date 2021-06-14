@@ -1,0 +1,39 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <h2>Room Info of {{ room_no }} no room</h2>
+    </div>
+</div>
+<div class="card card-body">
+  <!-- <a class="btn btn-sm btn-block bg-primary" style="color: white;"  href="{% url 'room_create' %}"> Create room </a> -->
+    <table class="table table-bordered">
+        <tr>
+            <td>{{ student1.0 }}</td>
+            <td>{{ student2.0 }}</td>
+            <td>{{ student3.0 }}</td>
+            <td>{{ student4.0 }}</td>
+        </tr>
+        <tr>
+            <td>{{ student1.1 }}</td>
+            <td>{{ student2.1 }}</td>
+            <td>{{ student3.1 }}</td>
+            <td>{{ student4.1 }}</td>
+        </tr>
+        <tr>
+            <td>{{ student1.2 }}</td>
+            <td>{{ student2.2 }}</td>
+            <td>{{ student3.2 }}</td>
+            <td>{{ student4.2 }}</td>
+        </tr>
+        <tr>
+            <td>{{ student1.3 }}</td>
+            <td>{{ student2.3 }}</td>
+            <td>{{ student3.3 }}</td>
+            <td>{{ student4.3 }}</td>
+        </tr>
+
+    </table>
+</div>
+{% endblock content %}

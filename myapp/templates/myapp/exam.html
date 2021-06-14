@@ -1,31 +1,32 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% extends 'myapp/base.html' %}
 
-  </head>
-  <body>
-    <br>
-
+{% block content %}
 <div class="row">
     <div class="col-md">
-        <div class="card card-body">
-            <h5> Exam </h5>
+              <div class="card text-center">
+                <div class="card-header">
+                  Exam Management
+                </div>
+                  <div class="card-body">
+                    <h5 class="card-title">All EXAM</h5>
+                      <p class="card-text">Create, update and delete accordingly</p>
+                  </div>
+              </div>
 
-        </div>
         <div class="card card-body">
-          <a class="btn btn-sm btn-block bg-dark" style="color: white;"  href="{% url 'exam_create' %}"> Create Customer </a>
+          <a class="btn btn-sm btn-block bg-primary" style="color: white;"  href="{% url 'exam_create' %}"> Add Exam </a>
             <table class="table">
+              <thead class="thead-light">
                 <tr>
                     <th>exam_code</th>
                     <th>exam_name</th>
                     <th>exam_date</th>
                     <th>exam_type</th>
                     <th>exam_time</th>
+                    <th></th>
+                    <th></th>
                 </tr>
-
+                </thead>
                 {% for exam in exam %}
                     <tr>
                         <td>{{exam.exam_code}}</td>
@@ -33,8 +34,8 @@
                         <td>{{exam.exam_date}}</td>
                         <td>{{exam.exam_type}}</td>
                         <td>{{exam.exam_time}}</td>
-                        <td><a class="btn btn-sm btn-info" href="{% url 'exam_update' exam.exam_code %}">Update</a></td>
-                        <td><a class="btn btn-sm btn-info" href="{% url 'exam_delete' exam.exam_code %}">Delete</a></td>
+                        <td><a class="btn btn-sm btn-info" href='{% url 'exam_update' exam.exam_code %}'>Update</a></td>
+                        <td><a class="btn btn-sm btn-danger" href='{% url 'exam_delete' exam.exam_code %}'>Delete</a></td>
 
                     </tr>
                 {% endfor %}
@@ -43,5 +44,4 @@
         </div>
     </div>
 </div>
-  </body>
-</html>
+{% endblock content %}

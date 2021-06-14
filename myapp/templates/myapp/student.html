@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% extends 'myapp/base.html' %}
 
-  </head>
+{% block content %}
   <body>
       <h1>student</h1>
       <a role="button" class="btn btn-primary btn-sm" href="{% url 'studentInfo' %}">Fill up Info</a>
@@ -14,5 +9,4 @@
       <a role="button" class="btn btn-primary btn-sm" href="{% url 'exam_schedule' %}">Exam Schedule</a>
 
 
-  </body>
-</html>
+{% endblock content %}

@@ -1,0 +1,43 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-5">
+                <h2>Student Info</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-5">
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                {% endif %}
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="stu_id">room no</label>
+                        <input type="text" name="room_no" class="form-control" id="room_no" aria-describedby="usernameHelp">
+                        <small id="usernameHelp" class="form-text text-muted">Your stu_id must be unique. We'll let you know if someone has taken it already.</small>
+                    </div> -->
+                    <div class="form-group">
+                        <label for="noofstudent">number of student</label>
+                        <input type="text" name="noofstudent" class="form-control" id="noofstudent" aria-describedby="usernameHelp">
+                        <small id="usernameHelp" class="form-text text-muted">Your login_id must be unique. We'll let you know if someone has taken it already.</small>
+                    </div>
+
+                     <div class="form-group">
+                        <label for="startroll">start roll</label>
+                        <input type="text" name="startroll" class="form-control" id="startroll">
+                    </div>
+
+
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                <hr>
+
+            </div>
+        </div>
+{% endblock content %}
