@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  </head>
-  <body>
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-3">
+        <h2>New Exam</h2>
+    </div>
+</div>
+<div class="row justify-content-center mt-5">
+  <div class="col-md-3">
     <form class="" action="" method="post">
       {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" name="Create" >
+        <input type="submit" class="btn btn-dark" name="Create" >
     </form>
-  </body>
-</html>
+</div>
+</div>
+
+{% endblock content %}

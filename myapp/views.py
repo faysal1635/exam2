@@ -9,6 +9,11 @@ from .models import *
 from .forms import *
 import hashlib;
 from django.db.models import Q
+from .filters import *
+from django.db.models import Func, F, Value
+from .decorators import allowed_users
+from datetime import datetime
+
 
 def home(request):
     return render(request,'myapp/home.html')
@@ -69,23 +74,44 @@ def studentInfo(request):
         if form.is_valid():
             form.save()
             return redirect('student')
+        else:
+            return render(request,'myapp/studentInfo.html',{'error':"Already uploaded"})
+
+@login_required
 def studentInfoupdate(request, pk):
       student= request.user
       name = student.id
       name = pk
-      student = Student.objects.get(user=pk)
+      student = Student.objects.get(user=name)
       form  = StudentFrom(instance=student)
       if request.method == 'POST':
           form = StudentFrom(request.POST,instance=student)
           if form.is_valid():
                user = form.save()
                return redirect('student')
+
       context = {'form':form}
       return render(request,'myapp/studentInfo.html',context)
-
+@login_required
 def seat_plan(request):
-    return render()
+    student=request.user
+    id = student.id
+    print(id)
+    student=list(Student.objects.filter(user=id).values_list('stu_roll','seat','room'))
+    print(student)
+    stu_roll = student[0][0]
+    roomid = student[0][2]
+    seat = list(SeatPlan.objects.filter(id=student[0][1]).values('seat_no'))
+    print(seat)
+    seat=seat[0]
+    seat=seat['seat_no']
+    print(seat)
+    room =list(Room.objects.filter(id=student[0][2]).values('room_no'))
+    room=room[0]
+    room=room['room_no']
+    return render(request,'myapp/seat_plan.html',{'stu_roll':stu_roll,'seat':seat,'room':room,'roomid':roomid})
 
+@login_required
 def exam_schedule(request):
     student = request.user
     id = student.id
@@ -98,22 +124,25 @@ def exam_schedule(request):
 def faculty(request):
       return render(request,'myapp/faculty.html')
 
+@login_required
+@allowed_users(allowed_roles=['Admin'])
 def admin_panel(request):
       room = Room.objects.all()
       return render(request,'myapp/admin_panel.html',{'room':room})
 
+@login_required
+@allowed_users(allowed_roles=['Admin'])
 def seat_manage(request):
+    room = Room.objects.all()
     if request.method == 'POST':
         val= request.POST['room_no']
         id = list(Room.objects.filter(room_no=val).values('id'))
         a = id[0]
-        # print(val)
-        # print(a)
-        # print(id)
         roomid = a['id']
         print(roomid)
         start_var= request.POST['startroll']
         var= request.POST['noofstudent']
+        s_seat = request.POST['startseat']
 
         num=int(var)
         cursor = connection.cursor()
@@ -127,12 +156,17 @@ def seat_manage(request):
     #    c_=b_[0]
         #b = list(Room.objects.filter(room_no=val).values_list('capacity',flat=True))
         current_capacity = b[0][0]
+        if current_capacity<num:
+            return render(request,'myapp/seat_manage.html',{'error':"Give less number of student"})
+
         print(current_capacity)
         update_capacity = current_capacity -num
         Room.objects.filter(room_no=val).update(capacity=update_capacity)
-        seatid = list(SeatPlan.objects.filter(seat_no='1').filter(room=roomid).values('id'))
+        seatid = list(SeatPlan.objects.filter(seat_no=s_seat).filter(room=roomid).values('id'))
         c= seatid[0]
         seatid_var=c['id']
+
+
         start=int(start_var)
         print(num)
         for i in range(num):
@@ -156,20 +190,74 @@ def seat_manage(request):
                 if k==0 or k==1 or k==2 or k==3 or k==11 or k==8 or k==9 or k==10 :
                     continue
                 else:
-                    Student.objects.filter(room=roomid).filter(stu_roll=start).update(seat=k+1)
-                    stu_id+=1
+                    Student.objects.filter(room=roomid).filter(stu_roll=start).update(seat=seatid_var)
+                    start+=1
+                    seatid_var+=1
         return redirect('admin_panel')
-    return render(request,'myapp/seat_manage.html')
+    print(room)
+    return render(request,'myapp/seat_manage.html',{'room':room})
 
+def delete_seat(request):
+    room = Room.objects.all()
+
+    Student.objects.all().update(room=None)
+    Student.objects.all().update(seat=None)
+
+    return redirect('admin_panel')
+
+
+@login_required
+@allowed_users(allowed_roles=['Admin'])
 def room_create(request):
       form  = RoomForm()
       if request.method == 'POST':
           form = RoomForm(request.POST)
           if form.is_valid():
               user = form.save()
+              room = form['room_no'].value()
+              id = list(Room.objects.filter(room_no=room).values('id'))
+              a = id[0]
+              roomid = a['id']
+              j=1
+
+              for i in range(16):
+                  if i<=3:
+                      seat=SeatPlan()
+                      seat.seat_no = i+1
+                      seat.cul_no = j
+                      seat.row_no = i+1
+                      seat.room = Room.objects.get(id=roomid)
+                      seat.save()
+
+                  elif i<=7:
+
+                      seat=SeatPlan()
+                      seat.seat_no = i+1
+                      seat.cul_no = j+1
+                      seat.row_no = i-3
+                      seat.room = Room.objects.get(id=roomid)
+                      seat.save()
+                  elif i<=11:
+                      seat=SeatPlan()
+                      seat.seat_no = i+1
+                      seat.cul_no = j+2
+                      seat.row_no = i-7
+                      seat.room = Room.objects.get(id=roomid)
+                      seat.save()
+                  elif i<=15:
+                      seat=SeatPlan()
+                      seat.seat_no = i+1
+                      seat.cul_no = j+3
+                      seat.row_no = i-11
+                      seat.room = Room.objects.get(id=roomid)
+                      seat.save()
+
+
               return redirect('admin_panel')
       context = {'form':form}
       return render(request,'myapp/room_create.html',context)
+
+@login_required
 def room(request,pk):
     room = Room.objects.get(id=pk)
     room_no= room.room_no
@@ -183,12 +271,13 @@ def room(request,pk):
     student4 = list(Student.objects.filter(room=pk).filter(Q(seat=seatid_var+12) | Q(seat=seatid_var+13) | Q(seat=seatid_var+14) | Q(seat=seatid_var+15)) )
 
 
-    print(student1)
+    print(student2)
 
     context={'room_no':room_no,'student1':student1,'student2':student2,'student3':student3,'student4':student4}
     return render(request,'myapp/room.html',context)
 
-
+@login_required
+@allowed_users(allowed_roles=['Admin'])
 def room_update(request,pk):
       room = Room.objects.get(id=pk)
       form  = RoomForm(instance=room)
@@ -200,15 +289,32 @@ def room_update(request,pk):
       context = {'form':form}
       return render(request,'myapp/room_create.html',context)
 
+def room_restore(request):
+      room = Room.objects.all()
+      Room.objects.all().update(capacity='16')
+      return render(request,'myapp/admin_panel.html',{'room':room})
+
+
+@login_required
+@allowed_users(allowed_roles=['Admin'])
 def exam(request):
       exam = Exam.objects.all()
-      # cursor = connection.cursor()
-      # sql = "select * from myapp_Exam"
-      # cursor.execute(sql)
-      # exam = cursor.fetchall()
-      print(exam)
-      print(connection.queries)
-      return render(request,'myapp/exam.html',{'exam':exam})
+      cse = Exam.objects.filter(student__stu_dept='cse').distinct()
+      print(cse[0])
+      myFilter = ExamFilter(request.POST, queryset = exam)
+      exam = myFilter.qs
+      print(myFilter.qs)
+      context={'exam':exam,'myFilter':myFilter}
+      return render(request,'myapp/exam.html',context)
+
+def delete_date(request):
+
+    Exam.objects.all().update(exam_date=None)
+
+    return redirect('exam')
+
+@login_required
+@allowed_users(allowed_roles=['Admin'])
 def exam_create(request):
       form  = ExamForm()
       if request.method == 'POST':
@@ -218,7 +324,8 @@ def exam_create(request):
               return redirect('exam')
       context = {'form':form}
       return render(request,'myapp/exam_create.html',context)
-
+@login_required
+@allowed_users(allowed_roles=['Admin'])
 def exam_update(request,pk):
       exam = Exam.objects.get(exam_code=pk)
       form  = ExamForm(instance=exam)
@@ -230,6 +337,8 @@ def exam_update(request,pk):
       context = {'form':form}
       return render(request,'myapp/exam_create.html',context)
 
+@login_required
+@allowed_users(allowed_roles=['Admin'])
 def exam_delete(request,pk):
     exam = Exam.objects.get(exam_code=pk)
     if request.method == 'POST':
@@ -237,3 +346,52 @@ def exam_delete(request,pk):
         return redirect('exam')
     context = {'exam_code':exam}
     return render(request,'myapp/exam_delete.html',context)
+
+def schedule_create(request):
+    if request.method == 'POST':
+        dept = request.POST['stu_dept']
+        level = request.POST.get('level', False)
+        term = request.POST.get('term',False)
+        print(level)
+        exam = Exam.objects.filter(student__stu_dept=dept,student__stu_level=level,student__stu_term=term).distinct()
+        num = Exam.objects.filter(student__stu_dept=dept,student__stu_level=level,student__stu_term=term).distinct().count()
+        print(num)
+        #queryset = Consults.objects.filter(Fecha=date.strftime("%DD/%MM/%YYYY"))
+
+        dat = Date.objects.all().values('date')
+        print(dat[0])
+        res = []
+        for i in dat:
+            i['date'] = i['date'].strftime('%Y-%m-%d')
+            res.append(i)
+        print(res)
+
+
+        print(res[0]['date'])
+
+        i=0
+        for i in range(num):
+            Exam.objects.filter(exam_code= exam[i]).update(exam_date= res[i]['date'])
+            i+=1
+        return redirect('admin_panel')
+    return render(request,'myapp/schedule_create.html')
+
+def date_view(request):
+     date = Date.objects.all()
+     form  = DateFrom()
+     if request.method == 'POST':
+         form = DateFrom(request.POST)
+         if form.is_valid():
+             user = form.save()
+             context = {'form':form,'success':'new date is Created','date':date}
+             return render(request,'myapp/date_view.html',context)
+     context = {'form':form,'date':date}
+     return render(request,'myapp/date_view.html',context)
+
+def date_delete(request,pk):
+    date = Date.objects.get(id=pk)
+    if request.method == 'POST':
+        date.delete()
+        return redirect('date_view')
+    context = {'id':date}
+    return render(request,'myapp/date_delete.html',context)

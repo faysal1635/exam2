@@ -1,0 +1,41 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-3">
+        <h2>Generate exam date</h2>
+    </div>
+</div>
+<div class="row justify-content-center mt-5">
+  <div class="col-md-3">
+    {% if success %}
+        <div class="alert alert-success" role="alert">
+            {{ success }}
+        </div>
+    {% endif %}
+    <form class="" action="" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+              <select id="Department" class="form-control" name="stu_dept">
+           <option value="cse">cse</option>
+           <option value="me">me</option>
+           <option value="ce">ce</option>
+           <option value="eece">eece</option>
+
+
+            </select>
+      </div>
+      <div class="form-group">
+          <label for="level">Level of student</label>
+          <input type="number" name="level" class="form-control" id="level" >
+      </div>
+      <div class="form-group">
+         <label for="term">Term of student</label>
+         <input type="number" name="term" class="form-control" id="term">
+     </div>
+        <input type="submit" class="btn btn-dark" name="Generate" >
+    </form>
+</div>
+
+{% endblock content %}

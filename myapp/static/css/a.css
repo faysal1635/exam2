@@ -1,0 +1,7 @@
+body{
+	background-image:url(" exam6.jpg ");
+  background-size: 1500px 700px;
+  background-repeat: no-repeat;
+
+}
+.card { background-color: rgba(0, 0, 0, 0.1); }

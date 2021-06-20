@@ -1,0 +1,60 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-3">
+        <h2>New Date</h2>
+    </div>
+</div>
+<div class="row justify-content-center mt-5">
+  <div class="col-md-3">
+    {% if success %}
+        <div class="alert alert-success" role="alert">
+            {{ success }}
+        </div>
+    {% endif %}
+    <form class="" action="" method="post">
+      {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-dark" name="Create" >
+    </form>
+</div>
+<div class="row">
+    <div class="col-md">
+              <div class="card">
+              <div class="card text-center">
+                <div class="card-header">
+                  Date Management
+                </div>
+                  <div class="card-body">
+                    <h5 class="card-title">All Date</h5>
+                      <p class="card-text">Create, update and delete accordingly</p>
+                  </div>
+              </div>
+            </div>
+
+        <div class="card card-body">
+
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                    <th>EXAM DATE</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                {% for date in date %}
+                    <tr>
+                        <td>{{date.date}}</td>
+
+                        <td><a class="btn btn-sm btn-info" href=''>Update</a></td>
+                        <td><a class="btn btn-sm btn-danger" href='{% url 'date_delete' date.id %}'>Delete</a></td>
+
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

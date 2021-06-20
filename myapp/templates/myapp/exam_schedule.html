@@ -1,20 +1,19 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% extends 'myapp/base.html' %}
 
-  </head>
-  <body>
-    <br>
-
+{% block content %}
 <div class="row">
-    <div class="col-md">
-        <div class="card card-body">
-            <h5> Exam_schedule </h5>
-
-        </div>
+  <div class="col-md">
+            <div class="card">
+            <div class="card text-center">
+              <div class="card-header">
+                Exam Schedule
+              </div>
+                <div class="card-body">
+                  <h5 class="card-title">All exam of {{ request.user }}</h5>
+                    <p class="card-text">Here is all info of your exam </p>
+                </div>
+            </div>
+          </div>
         <div class="card card-body">
           <a class="btn btn-sm btn-block bg-primary" style="color: white;"  href="{% url 'student' %}"> Go Back </a>
             <table class="table">
@@ -41,5 +40,4 @@
         </div>
     </div>
 </div>
-  </body>
-</html>
+{% endblock %}

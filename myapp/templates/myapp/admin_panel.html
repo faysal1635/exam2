@@ -6,32 +6,58 @@
 </div>
 <div class="row">
   <div class="col-sm-6">
-    <div class="card text-center">
+    <div class="card text-center border-primary">
       <div class="card-body">
-        <h5 class="card-title">Exam Manage</h5>
+        <h5 class="card-header">Exam Manage</h5>
         <p class="card-text">Update the date of exam,add any new Exam and Manage everything of exam</p>
-        <a href="{% url 'exam' %}" class="btn btn-primary">Exam</a>
+        <a href="{% url 'exam' %}" class="btn btn-dark">Exam</a>
       </div>
     </div>
   </div>
   <div class="col-sm-6">
-    <div class="card text-center">
+    <div class="card text-center border-primary">
       <div class="card-body">
-        <h5 class="card-title">Seat Manage</h5>
+        <h5 class="card-header">Seat Manage</h5>
         <p class="card-text">Give number of student and their room No</p>
-        <a href="{% url 'seat_manage' %}" class="btn btn-primary">SeatPlan</a>
+        <a href="{% url 'seat_manage' %}" class="btn btn-dark">SeatPlan</a>
       </div>
     </div>
   </div>
 </div>
 
 <hr>
+<div class="row">
+  <div class="col-sm-6">
+
+       <div class="card text-center border-primary">
+         <div class="card-body">
+           <h5 class="card-header">Manage Schedule</h5>
+           <p class="card-text">Create new date for exam</p>
+           <a href="{% url 'schedule_create' %}" class="btn btn-dark">Schedule</a>
+         </div>
+       </div>
+   </div>
+   <div class="col-sm-6">
+
+        <div class="card text-center border-primary">
+          <div class="card-body">
+            <h5 class="card-header">Manage Date</h5>
+            <p class="card-text">Create new date for exam</p>
+            <a href="{% url 'date_view' %}" class="btn btn-dark">Date</a>
+          </div>
+        </div>
+    </div>
+
+   </div>
+
+   <hr>
   <div class="col">
         <div class="row justify-content-center">
           <h5> ALL ROOM </h5>
         </div>
          <hr>
          <div class="card card-body">
+           <a class="btn btn-sm btn-block bg-primary" style="color: white;"  href="{% url 'room_restore' %}"> Restore room </a>
            <a class="btn btn-sm btn-block bg-primary" style="color: white;"  href="{% url 'room_create' %}"> Create room </a>
              <table class="table table-sm">
                  <tr>
@@ -57,7 +83,7 @@
                          <a class="btn btn-sm btn-info" href="{% url 'room_update' room.id %}">Update</a>
                      </td>
                      <td>
-                         <a class="btn btn-sm btn-danger" href="{% url 'room' room.id %}">View</a>
+                         <a class="btn btn-sm btn-secondary" href="{% url 'room' room.id %}">View</a>
                      </td>
                  </tr>
                  {% endfor %}

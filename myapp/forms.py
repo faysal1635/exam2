@@ -12,7 +12,7 @@ class UserCreateForm(UserCreationForm):
 class StudentFrom(ModelForm):
     class Meta:
         model = Student
-        fields=['user','stu_name','stu_roll','stu_level','stu_dept','stu_mail','exam']
+        fields=['user','stu_name','stu_roll','stu_level','stu_term','stu_dept','stu_mail','exam']
 
 class ExamForm(ModelForm):
     class Meta:
@@ -24,4 +24,8 @@ class RoomForm(ModelForm):
     class Meta:
         model = Room
         fields = '__all__'
-        
+
+class DateFrom(ModelForm):
+    class Meta:
+        model = Date
+        fields = '__all__'

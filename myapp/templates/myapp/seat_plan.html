@@ -1,0 +1,45 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md">
+              <div class="card">
+              <div class="card text-center">
+                <div class="card-header">
+                  Exam Management
+                </div>
+                  <div class="card-body">
+                    <h5 class="card-title">All EXAM</h5>
+                      <p class="card-text">Create, update and delete accordingly</p>
+                  </div>
+              </div>
+            </div>
+        <div class="card card-body">
+          <a class="btn btn-sm btn-block bg-primary" style="color: white;"  href="{% url 'student' %}"> Go back</a>
+            <table class="table ">
+              <thead class="thead-light">
+                <tr>
+                    <th>Student</th>
+                    <th>Seat No</th>
+                    <th>Room No</th>
+                    <th></th>
+
+                </thead>
+
+                    <tr>
+                        <td>{{ stu_roll }}</td>
+                        <td>{{ seat }}</td>
+                        <td>{{room}}</td>
+                        <td><a class="btn btn-sm  btn-info"  href="{% url 'room' roomid %}"> room</a></td>
+
+
+                    </tr>
+
+
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

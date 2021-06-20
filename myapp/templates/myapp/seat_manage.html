@@ -1,6 +1,19 @@
 {% extends 'myapp/base.html' %}
 
 {% block content %}
+<div class="row">
+  <div class="col">
+    <div class="card text-center border-primary">
+      <div class="card-body">
+        <h5 class="card-header">Delete seat</h5>
+        <p class="card-text">Delate all seat given to student</p>
+        <a href="{% url 'delete_seat' %}" class="btn btn-dark">remove</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
         <div class="row justify-content-center mt-5">
             <div class="col-md-5">
                 <h2>Student Info</h2>
@@ -17,21 +30,28 @@
                     {% csrf_token %}
 
                     <div class="form-group">
-                        <label for="stu_id">room no</label>
-                        <input type="text" name="room_no" class="form-control" id="room_no" aria-describedby="usernameHelp">
-                        <small id="usernameHelp" class="form-text text-muted">Your stu_id must be unique. We'll let you know if someone has taken it already.</small>
+                            <select id="Room no" class="form-control" name="room_no">
+                            {% for room in room %}
+                         <option value="{{ room.room_no }}">{{ room.room_no }}</option>
+                            {% endfor %}
+
+                          </select>
+                        <small id="usernameHelp" class="form-text text-muted">Check the capacity before input</small>
                     </div> -->
                     <div class="form-group">
                         <label for="noofstudent">number of student</label>
                         <input type="text" name="noofstudent" class="form-control" id="noofstudent" aria-describedby="usernameHelp">
-                        <small id="usernameHelp" class="form-text text-muted">Your login_id must be unique. We'll let you know if someone has taken it already.</small>
+                        <small id="usernameHelp" class="form-text text-muted">Give a student roll</small>
                     </div>
 
                      <div class="form-group">
                         <label for="startroll">start roll</label>
                         <input type="text" name="startroll" class="form-control" id="startroll">
                     </div>
-
+                    <div class="form-group">
+                        <label for="startseat">start seat</label>
+                        <input type="number" name="startseat" class="form-control" id="startseat">
+                    </div>
 
 
                     <button type="submit" class="btn btn-primary">Submit</button>
