@@ -61,10 +61,12 @@ def logoutuser(request):
         return redirect('home')
 
 @login_required
+@allowed_users(allowed_roles=['Student'])
 def student(request):
       return render(request,'myapp/student.html')
 
 @login_required
+@allowed_users(allowed_roles=['Student'])
 def studentInfo(request):
     if request.method == 'GET':
         return render(request,'myapp/studentInfo.html',{'form':StudentFrom()})
@@ -78,6 +80,7 @@ def studentInfo(request):
             return render(request,'myapp/studentInfo.html',{'error':"Already uploaded"})
 
 @login_required
+@allowed_users(allowed_roles=['Student'])
 def studentInfoupdate(request, pk):
       student= request.user
       name = student.id
@@ -92,7 +95,9 @@ def studentInfoupdate(request, pk):
 
       context = {'form':form}
       return render(request,'myapp/studentInfo.html',context)
+
 @login_required
+@allowed_users(allowed_roles=['Student'])
 def seat_plan(request):
     student=request.user
     id = student.id
@@ -112,6 +117,7 @@ def seat_plan(request):
     return render(request,'myapp/seat_plan.html',{'stu_roll':stu_roll,'seat':seat,'room':room,'roomid':roomid})
 
 @login_required
+@allowed_users(allowed_roles=['Student'])
 def exam_schedule(request):
     student = request.user
     id = student.id
@@ -258,6 +264,19 @@ def room_create(request):
       return render(request,'myapp/room_create.html',context)
 
 @login_required
+@allowed_users(allowed_roles=['Admin'])
+def room_delete(request,pk):
+    room = Room.objects.get(id=pk)
+    if request.method == 'POST':
+        SeatPlan.objects.filter(room=pk).delete()
+        room.delete()
+        return redirect('admin_panel')
+    context = {'id':room}
+    return render(request,'myapp/room_delete.html',context)
+
+
+
+@login_required
 def room(request,pk):
     room = Room.objects.get(id=pk)
     room_no= room.room_no
@@ -289,6 +308,8 @@ def room_update(request,pk):
       context = {'form':form}
       return render(request,'myapp/room_create.html',context)
 
+@login_required
+@allowed_users(allowed_roles=['Admin'])
 def room_restore(request):
       room = Room.objects.all()
       Room.objects.all().update(capacity='16')
@@ -307,6 +328,8 @@ def exam(request):
       context={'exam':exam,'myFilter':myFilter}
       return render(request,'myapp/exam.html',context)
 
+@login_required
+@allowed_users(allowed_roles=['Admin'])
 def delete_date(request):
 
     Exam.objects.all().update(exam_date=None)
@@ -324,6 +347,7 @@ def exam_create(request):
               return redirect('exam')
       context = {'form':form}
       return render(request,'myapp/exam_create.html',context)
+
 @login_required
 @allowed_users(allowed_roles=['Admin'])
 def exam_update(request,pk):
@@ -347,6 +371,8 @@ def exam_delete(request,pk):
     context = {'exam_code':exam}
     return render(request,'myapp/exam_delete.html',context)
 
+@login_required
+@allowed_users(allowed_roles=['Admin'])
 def schedule_create(request):
     if request.method == 'POST':
         dept = request.POST['stu_dept']
@@ -376,8 +402,12 @@ def schedule_create(request):
         return redirect('admin_panel')
     return render(request,'myapp/schedule_create.html')
 
+@login_required
+@allowed_users(allowed_roles=['Admin'])
 def date_view(request):
      date = Date.objects.all()
+     cse = Exam.objects.filter(student__stu_dept='cse',student__stu_term='1',student__stu_level='3').distinct().count()
+     print(cse)
      form  = DateFrom()
      if request.method == 'POST':
          form = DateFrom(request.POST)
@@ -388,6 +418,9 @@ def date_view(request):
      context = {'form':form,'date':date}
      return render(request,'myapp/date_view.html',context)
 
+
+@login_required
+@allowed_users(allowed_roles=['Admin'])
 def date_delete(request,pk):
     date = Date.objects.get(id=pk)
     if request.method == 'POST':

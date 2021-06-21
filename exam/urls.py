@@ -37,6 +37,7 @@ urlpatterns = [
     path('room_create/', views.room_create,name='room_create'),
     path('room_restore/', views.room_restore,name='room_restore'),
     path('room_update/<str:pk>', views.room_update,name='room_update'),
+    path('room_delete/<str:pk>', views.room_delete,name='room_delete'),
     path('room/<str:pk>', views.room,name='room'),
     path('seat_manage/', views.seat_manage,name='seat_manage'),
     path('delete_seat/', views.delete_seat,name='delete_seat'),

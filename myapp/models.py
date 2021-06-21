@@ -59,4 +59,5 @@ class Exam(models.Model):
 class Date(models.Model):
     date = models.DateField(blank=True, null=True)
     def __str__(self):
-        return self.date
+        return str(self.date)
+        

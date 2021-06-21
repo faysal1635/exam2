@@ -66,6 +66,7 @@
                      <th>Capacity</th>
                      <th>update</th>
                      <th>veiw</th>
+                     <th>delete</th>
                  </tr>
 
                  {% for room in room %}
@@ -85,6 +86,9 @@
                      <td>
                          <a class="btn btn-sm btn-secondary" href="{% url 'room' room.id %}">View</a>
                      </td>
+
+                       <td><a class="btn btn-sm btn-danger" href='{% url 'room_delete' room.id %}'>Delete</a></td>
+
                  </tr>
                  {% endfor %}
              </table>
